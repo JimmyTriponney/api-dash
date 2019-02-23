@@ -16,9 +16,11 @@ class AdminRegistrationType extends AbstractType
             ->add('lastname')
             ->add('username')
             ->add('password')
+            ->add('confirmPassword')
             ->add('createdAt')
             ->add('updatedAt')
             ->add('email')
+            ->add('roles')
         ;
     }
 

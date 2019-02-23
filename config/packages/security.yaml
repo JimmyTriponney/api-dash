@@ -1,13 +1,39 @@
 security:
+    encoders:
+        App\Entity\Admin:
+            algorithm: bcrypt
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: ~ }
+        in_db:
+            entity:
+                class: App\Entity\Admin
+                property: username
     firewalls:
+        main:
+#            Configuration d'après le tuto de la doc symfony
+            anonymous: ~
+            logout: ~
+            provider: in_db
+
+            guard:
+                authenticators:
+                    - App\Security\TokenAuthenticator
+
+#            pattern: ^/admin
+#            provider: in_db
+#            anonymous: ~
+#
+#            login_path: security_admin_login
+#            check_path: security_admin_login
+#
+#            logout:
+#                path: security_admin_login
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
+                # target: Route une fois déconnecté
 
             # activate different ways to authenticate
 
@@ -20,5 +46,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/test/unauthorize, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
